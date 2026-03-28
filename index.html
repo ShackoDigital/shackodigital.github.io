@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shacko Digital | Premium Tasarım</title>
+    <title>Shacko Digital | Premium Tasarım Mağazası</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -29,8 +30,8 @@
             margin: 40px auto; box-shadow: 0 20px 40px rgba(0,0,0,0.5); text-align: center;
         }
 
-        .product-grid { display: grid; grid-template-columns: 1fr; gap: 15px; max-width: 800px; margin: 0 auto; }
-        .p-card { background: #fff; border-radius: 15px; padding: 15px; color: #333; text-align: left; border-left: 6px solid var(--main); }
+        .product-grid { display: grid; grid-template-columns: 1fr; gap: 15px; max-width: 800px; margin: 0 auto; padding-bottom: 80px; }
+        .p-card { background: #fff; border-radius: 15px; padding: 15px; color: #333; text-align: left; border-left: 6px solid var(--main); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .p-card.premium { border-left-color: var(--premium); background: #fffdf5; }
         .p-price { font-weight: bold; color: var(--main); font-size: 1.2em; margin: 5px 0; }
         
@@ -38,6 +39,11 @@
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s; margin-top: 5px; }
         .btn-main { background: var(--main); color: white; }
         .btn-cart { background: #333; color: white; margin-bottom: 20px; }
+        
+        /* Sosyal Medya Butonları */
+        .social-bar { margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+        .social-icon { font-size: 1.5em; color: #333; transition: 0.3s; }
+        .social-icon:hover { color: var(--main); }
     </style>
 </head>
 <body>
@@ -45,23 +51,23 @@
     <div id="authPage" class="page active">
         <div class="glass-card">
             <h1 style="font-family: 'Dancing Script'; color: var(--main); font-size: 3em;">Shacko Digital</h1>
-            
             <div id="loginForm">
                 <h3>Giriş Yap</h3>
                 <input type="email" id="lEmail" placeholder="E-posta">
                 <input type="password" id="lPass" placeholder="Şifre">
                 <button class="btn btn-main" onclick="handleLogin()">Giriş Yap</button>
-                <p id="lMsg" style="font-size: 0.8em; color: red;"></p>
                 <p style="font-size: 0.8em; margin-top: 10px;">Hesabın yok mu? <a href="#" onclick="toggleAuth(false)">Kayıt Ol</a></p>
             </div>
-
             <div id="registerForm" style="display: none;">
                 <h3>Yeni Kayıt</h3>
                 <input type="email" id="rEmail" placeholder="E-posta">
                 <input type="password" id="rPass" placeholder="Şifre (Min. 6 Karakter)">
                 <button class="btn btn-main" onclick="handleRegister()">Kayıt Ol</button>
-                <p id="rMsg" style="font-size: 0.8em; color: red;"></p>
                 <p style="font-size: 0.8em; margin-top: 10px;">Zaten üye misin? <a href="#" onclick="toggleAuth(true)">Giriş Yap</a></p>
+            </div>
+            <div class="social-bar">
+                <a href="https://instagram.com/shacko" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/905XXXXXXXXX" class="social-icon"><i class="fab fa-whatsapp"></i></a>
             </div>
         </div>
     </div>
@@ -69,23 +75,48 @@
     <div id="shopPage" class="page">
         <div style="text-align:center; margin-bottom: 20px;">
             <h1 style="font-family: 'Dancing Script'; font-size: 2.5em; color: var(--main);">Shacko Mağaza ✨</h1>
-            <p id="userDisplay" style="font-size: 0.9em;"></p>
             <button class="btn btn-cart" style="width: auto; padding: 10px 20px;" onclick="showPage('cartPage')">🛒 Sepet (<span id="cartCount">0</span>)</button>
-            <button class="btn" style="width: auto; padding: 5px 10px; background: #555; color: white; font-size: 0.7em;" onclick="handleLogout()">Güvenli Çıkış</button>
+            <br><button onclick="handleLogout()" style="background:none; border:none; color:#aaa; font-size:0.7em; cursor:pointer;">Güvenli Çıkış Yap</button>
         </div>
 
         <div class="product-grid">
             <div class="p-card">
                 <h4>İnteraktif Özür Sayfası</h4>
+                <p style="font-size: 0.8em;">Eğlenceli ve etkileşimli pişmanlık sayfası.</p>
                 <div class="p-price">150 TL</div>
                 <button class="btn btn-main" onclick="addToCart('Özür Sayfası', 150)">Sepete Ekle</button>
             </div>
+            <div class="p-card">
+                <h4>Müzikli Aşk Albümü</h4>
+                <p style="font-size: 0.8em;">Anılarınız ve en sevdiğiniz parça bir arada.</p>
+                <div class="p-price">250 TL</div>
+                <button class="btn btn-main" onclick="addToCart('Aşk Albümü', 250)">Sepete Ekle</button>
+            </div>
             <div class="p-card premium">
                 <h4>🗞️ Premium Aşk Gazetesi</h4>
+                <p style="font-size: 0.8em;">Aşkınızı manşetlere taşıyan özel tasarım.</p>
                 <div class="p-price">400 TL</div>
                 <button class="btn btn-main" onclick="addToCart('Aşk Gazetesi', 400)">Sepete Ekle</button>
             </div>
+            <div class="p-card">
+                <h4>Yıldız Haritası Sayfası</h4>
+                <p style="font-size: 0.8em;">Tanıştığınız anın gökyüzü haritası.</p>
+                <div class="p-price">300 TL</div>
+                <button class="btn btn-main" onclick="addToCart('Yıldız Haritası', 300)">Sepete Ekle</button>
             </div>
+            <div class="p-card">
+                <h4>WhatsApp Mesaj Arşivi</h4>
+                <p style="font-size: 0.8em;">En özel mesajlar artık bir web sitesi.</p>
+                <div class="p-price">200 TL</div>
+                <button class="btn btn-main" onclick="addToCart('Mesaj Arşivi', 200)">Sepete Ekle</button>
+            </div>
+            <div class="p-card premium">
+                <h4>👑 Sonsuz Aşk Video Sitesi</h4>
+                <p style="font-size: 0.8em;">Videolu ve mektuplu sinematik sunum.</p>
+                <div class="p-price">500 TL</div>
+                <button class="btn btn-main" onclick="addToCart('Sonsuz Aşk', 500)">Sepete Ekle</button>
+            </div>
+        </div>
     </div>
 
     <div id="cartPage" class="page">
@@ -94,17 +125,12 @@
             <div id="cartItems" style="text-align: left; margin-bottom: 20px;"></div>
             <h4 id="totalDisplay">Toplam: 0 TL</h4>
             <hr>
-            <form onsubmit="return handlePayment(event)">
-                <input type="text" id="cName" placeholder="Kart Üzerindeki İsim" required>
-                <input type="text" id="cNum" placeholder="16 Haneli Kart Numarası" maxlength="16" required>
-                <button type="submit" class="btn btn-main">Ödemeyi Onayla</button>
-                <button type="button" class="btn" style="background:#eee;" onclick="showPage('shopPage')">Geri Dön</button>
-            </form>
+            <button class="btn btn-main" onclick="handlePayment()">Ödemeyi Onayla (Shopier)</button>
+            <button class="btn" style="background:#eee;" onclick="showPage('shopPage')">Geri Dön</button>
         </div>
     </div>
 
     <script>
-        // 1. FIREBASE BAĞLANTISI (SENİN TAPUN)
         const firebaseConfig = {
             apiKey: "AIzaSyCLds70T1pcQagPA7PI8hts06IRluGoX7E",
             authDomain: "shackodigital.firebaseapp.com",
@@ -116,76 +142,27 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        // 2. OTURUM KONTROLÜ (BENİ HATIRLA ÖZELLİĞİ)
         auth.onAuthStateChanged((user) => {
-            if (user) {
-                document.getElementById('userDisplay').innerText = "Hoş geldin, " + user.email;
-                showPage('shopPage');
-            } else {
-                showPage('authPage');
-            }
+            if (user) { showPage('shopPage'); } else { showPage('authPage'); }
         });
 
-        // 3. FONKSİYONLAR
-        let cart = [];
-        let total = 0;
-
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
-
-        function toggleAuth(isLogin) {
-            document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
-            document.getElementById('registerForm').style.display = isLogin ? 'none' : 'block';
-        }
-
-        function handleRegister() {
-            const e = document.getElementById('rEmail').value;
-            const p = document.getElementById('rPass').value;
-            auth.createUserWithEmailAndPassword(e, p)
-                .catch(err => document.getElementById('rMsg').innerText = "Hata: " + err.message);
-        }
-
-        function handleLogin() {
-            const e = document.getElementById('lEmail').value;
-            const p = document.getElementById('lPass').value;
-            auth.signInWithEmailAndPassword(e, p)
-                .catch(err => document.getElementById('lMsg').innerText = "Giriş Başarısız!");
-        }
-
+        let cart = []; let total = 0;
+        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+        function toggleAuth(isLogin) { document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none'; document.getElementById('registerForm').style.display = isLogin ? 'none' : 'block'; }
+        
+        function handleRegister() { const e = document.getElementById('rEmail').value; const p = document.getElementById('rPass').value; auth.createUserWithEmailAndPassword(e, p).catch(err => alert(err.message)); }
+        function handleLogin() { const e = document.getElementById('lEmail').value; const p = document.getElementById('lPass').value; auth.signInWithEmailAndPassword(e, p).catch(err => alert("Giriş Hatalı!")); }
         function handleLogout() { auth.signOut(); }
 
-        function addToCart(name, price) {
-            cart.push({name, price});
-            total += price;
-            updateCart();
-            alert(name + " eklendi!");
-        }
-
-        function updateCart() {
-            document.getElementById('cartCount').innerText = cart.length;
-            document.getElementById('cartItems').innerHTML = cart.map(i => `<div>• ${i.name} - ${i.price} TL</div>`).join('');
-            document.getElementById('totalDisplay').innerText = "Toplam: " + total + " TL";
-        }
-
-        function handlePayment(e) {
-            e.preventDefault();
-            if (cart.length === 0) { alert("Sepet boş!"); return false; }
+        function addToCart(name, price) { cart.push({name, price}); total += price; updateCart(); alert(name + " eklendi!"); }
+        function updateCart() { document.getElementById('cartCount').innerText = cart.length; document.getElementById('cartItems').innerHTML = cart.map(i => `<div>• ${i.name} - ${i.price} TL</div>`).join(''); document.getElementById('totalDisplay').innerText = "Toplam: " + total + " TL"; }
+        
+        function handlePayment() { 
+            if(cart.length == 0) { alert("Sepet boş!"); return; }
             alert("Shopier'a yönlendiriliyorsunuz...");
-            window.location.href = "https://www.shopier.com/ShackoDigital"; // BURAYA KENDİ LİNKİNİ YAZ
-            return false;
+            window.location.href = "https://www.shopier.com/ShackoDigital"; 
         }
     </script>
 </body>
-</html>
-
-
-
-
-
-
-
-
-
-
+                    </html>
+                    
