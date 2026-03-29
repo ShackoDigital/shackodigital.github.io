@@ -9,38 +9,40 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
     <style>
-        :root { --gold: #d4af37; --black: #050505; }
-        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--black); color: #fff; overflow-x: hidden; }
+        :root { --gold: #d4af37; --bg: #050505; --dark-green: #0a2e1d; }
+        body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--bg); color: #fff; overflow-x: hidden; }
         
-        /* Sayfa Başlangıçta Kapalı Olsun */
-        .page { display: none; width: 100%; min-height: 100vh; position: absolute; top: 0; left: 0; }
-        .active { display: flex !important; flex-direction: column; }
+        /* Sayfa Katmanları */
+        .page { display: none; width: 100%; min-height: 100vh; position: fixed; top: 0; left: 0; overflow-y: auto; }
+        .active { display: block !important; z-index: 100; }
 
         /* GİRİŞ EKRANI */
-        #authPage { background: radial-gradient(circle, #0a2e1d 0%, #000 100%); align-items: center; justify-content: center; z-index: 1000; }
-        .auth-card { background: rgba(15, 15, 15, 0.98); padding: 40px 30px; border-radius: 30px; border: 1px solid var(--gold); text-align: center; width: 85%; max-width: 350px; }
-        .logo { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 3em; line-height: 0.8; margin-bottom: 20px; }
+        #authPage { background: radial-gradient(circle, var(--dark-green) 0%, #000 100%); display: flex; align-items: center; justify-content: center; }
+        .auth-card { background: rgba(15, 15, 15, 0.98); padding: 40px 30px; border-radius: 30px; border: 1px solid var(--gold); text-align: center; width: 85%; max-width: 350px; box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
+        .logo { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 3.5em; line-height: 0.8; margin-bottom: 10px; }
         
-        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #222; background: #000; color: #fff; box-sizing: border-box; outline: none; }
-        .btn-gold { width: 100%; padding: 16px; border: none; border-radius: 12px; background: var(--gold); color: #000; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #333; background: #000; color: #fff; box-sizing: border-box; outline: none; }
+        .btn-gold { width: 100%; padding: 16px; border: none; border-radius: 12px; background: var(--gold); color: #000; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
         .toggle-btn { margin-top: 20px; font-size: 0.8em; color: #888; cursor: pointer; text-decoration: underline; }
 
         /* MAĞAZA EKRANI */
-        #shopPage { background: var(--black); z-index: 500; }
-        .nav { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: #000; position: sticky; top: 0; z-index: 1100; border-bottom: 1px solid #111; }
-        .nav-btn { padding: 8px 18px; border-radius: 20px; border: 1px solid #333; background: transparent; color: #fff; white-space: nowrap; font-size: 0.8em; }
-        .nav-btn.active-cat { background: var(--gold); color: #000; }
+        #shopPage { background: var(--bg); z-index: 50; }
+        .nav { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: #000; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #111; scrollbar-width: none; }
+        .nav-btn { padding: 10px 20px; border-radius: 20px; border: 1px solid #333; background: transparent; color: #fff; white-space: nowrap; font-size: 0.8em; font-weight: 600; cursor: pointer; }
+        .nav-btn.active-cat { background: var(--gold); color: #000; border-color: var(--gold); }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 15px; }
-        .p-card { background: #111; border-radius: 20px; border: 1px solid #222; text-align: center; padding: 15px; }
-        .p-title { font-size: 0.8em; font-weight: 600; margin: 10px 0; min-height: 35px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; padding-bottom: 120px; }
+        .p-card { background: #111; border-radius: 20px; border: 1px solid #222; text-align: center; padding: 15px; display: flex; flex-direction: column; }
+        .p-title { font-size: 0.8em; font-weight: 600; margin: 10px 0; min-height: 35px; color: #eee; }
         .sizes { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-bottom: 15px; }
-        .s-btn { padding: 4px 8px; font-size: 0.6em; border: 1px solid #333; background: transparent; color: #fff; border-radius: 5px; }
-        .s-btn.selected { background: var(--gold); color: #000; }
-        .buy-btn { width: 100%; padding: 10px; border: none; border-radius: 10px; background: var(--gold); color: #000; font-weight: 800; font-size: 0.7em; }
+        .s-btn { padding: 4px 8px; font-size: 0.6em; border: 1px solid #333; background: transparent; color: #fff; border-radius: 5px; cursor: pointer; }
+        .s-btn.selected { background: var(--gold); color: #000; border-color: var(--gold); }
+        .buy-btn { width: 100%; padding: 10px; border: none; border-radius: 10px; background: var(--gold); color: #000; font-weight: 800; font-size: 0.7em; text-transform: uppercase; cursor: pointer; }
 
-        .footer { text-align: center; padding: 30px; }
-        .insta-btn { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 0.8em; }
+        /* ALT KISIM */
+        .footer { text-align: center; padding: 30px; background: #000; }
+        .insta-btn { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #bc1888); color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 0.85em; display: inline-block; margin-bottom: 20px; }
+        .logout-link { color: #555; text-decoration: underline; font-size: 0.8em; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -48,45 +50,59 @@
     <div id="authPage" class="page active">
         <div class="auth-card">
             <div class="logo">SHACKO<br>WEAR</div>
-            <p style="font-size: 10px; letter-spacing: 3px; color: #666; margin-bottom: 25px;">PREMIUM ADANA</p>
+            <p style="font-size: 10px; letter-spacing: 4px; color: #666; margin-bottom: 25px;">PREMIUM COLLECTION</p>
             
             <div id="loginForm">
                 <input type="email" id="lEmail" placeholder="E-posta">
                 <input type="password" id="lPass" placeholder="Şifre">
                 <button class="btn-gold" onclick="handleAuth('login')">GİRİŞ YAP</button>
-                <div class="toggle-btn" onclick="toggleView(false)">Hesabın yok mu? Kayıt Ol</div>
+                <div class="toggle-btn" onclick="toggleAuth(false)">Hesabın yok mu? Kayıt Ol</div>
             </div>
 
             <div id="regForm" style="display:none;">
-                <input type="email" id="rEmail" placeholder="E-posta">
-                <input type="password" id="rPass" placeholder="Şifre Belirle">
+                <input type="email" id="rEmail" placeholder="Yeni E-posta">
+                <input type="password" id="rPass" placeholder="Yeni Şifre">
                 <button class="btn-gold" onclick="handleAuth('reg')">KAYIT OL</button>
-                <div class="toggle-btn" onclick="toggleView(true)">Zaten üye misin? Giriş Yap</div>
+                <div class="toggle-btn" onclick="toggleAuth(true)">Zaten üye misin? Giriş Yap</div>
             </div>
         </div>
     </div>
 
     <div id="shopPage" class="page">
-        <div class="nav" id="catNav">
+        <div class="nav">
             <button class="nav-btn active-cat" onclick="render('all', this)">Tümü</button>
             <button class="nav-btn" onclick="render('erkek', this)">Erkek</button>
             <button class="nav-btn" onclick="render('kadin', this)">Kadın</button>
             <button class="nav-btn" onclick="render('pantolon', this)">Pantolon</button>
+            <button class="nav-btn" onclick="render('takim', this)">Takımlar</button>
+            <button class="nav-btn" onclick="render('cocuk', this)">Çocuk</button>
         </div>
+
         <div class="grid" id="mainGrid"></div>
+
         <div class="footer">
-            <a href="https://instagram.com/shackowear" target="_blank" class="insta-btn">📸 INSTAGRAM</a><br><br>
-            <button onclick="firebase.auth().signOut()" style="background:none; border:none; color:#555; text-decoration:underline;">Çıkış Yap</button>
+            <a href="https://instagram.com/shackowear" target="_blank" class="insta-btn">📸 SHACKO INSTAGRAM</a><br>
+            <span class="logout-link" onclick="firebase.auth().signOut()">Oturumu Kapat</span>
         </div>
     </div>
 
     <script>
         const products = [
+            // ERKEK
             { cat: 'erkek', title: 'V Yaka Slim Tişört', sizes: ['S','M','L','XL','XXL'] },
             { cat: 'erkek', title: 'Basic Oversize Tişört', sizes: ['S','M','L','XL'] },
-            { cat: 'kadin', title: 'Fitilli Crop Top', sizes: ['XS','S','M','L'] },
+            // KADIN
+            { cat: 'kadin', title: 'Crop Top Premium', sizes: ['XS','S','M','L'] },
+            { cat: 'kadin', title: 'Düz Tayt', sizes: ['S','M','L','XL'] },
+            // PANTOLON
             { cat: 'pantolon', title: 'Siyah Kargo Pantolon', sizes: ['28','29','30','32','34'] },
-            { cat: 'pantolon', title: 'Lacivert Düz Pantolon', sizes: ['28','30','32','34'] }
+            { cat: 'pantolon', title: 'Lacivert Düz Pantolon', sizes: ['28','30','32','34'] },
+            // TAKIMLAR
+            { cat: 'takim', title: 'Düz Jogger Takımı', sizes: ['S','M','L','XL'] },
+            { cat: 'takim', title: 'Oversize Eşofman Takımı', sizes: ['S','M','L','XL'] },
+            // ÇOCUK
+            { cat: 'cocuk', title: 'Kız Çocuk Elbise', sizes: ['4-6Y','7-9Y','10-12Y'] },
+            { cat: 'cocuk', title: 'Erkek Çocuk Takım', sizes: ['4-6Y','7-9Y','10-12Y'] }
         ];
 
         const firebaseConfig = {
@@ -100,7 +116,7 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        function toggleView(isLogin) {
+        function toggleAuth(isLogin) {
             document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
             document.getElementById('regForm').style.display = isLogin ? 'none' : 'block';
         }
@@ -120,13 +136,20 @@
             const grid = document.getElementById('mainGrid');
             grid.innerHTML = '';
             const filtered = cat === 'all' ? products : products.filter(p => p.cat === cat);
+            
             filtered.forEach(p => {
                 let sHtml = p.sizes.map(s => `<button class="s-btn" onclick="this.parentElement.querySelectorAll('.s-btn').forEach(b=>b.classList.remove('selected'));this.classList.add('selected')">${s}</button>`).join('');
-                grid.innerHTML += `<div class="p-card"><div style="font-size:2em">👕</div><div class="p-title">${p.title}</div><div class="sizes">${sHtml}</div><button class="buy-btn" onclick="window.location.href='https://shopier.com/ShackoWear'">SİPARİŞ VER</button></div>`;
+                grid.innerHTML += `
+                    <div class="p-card">
+                        <div style="font-size:2.5em; color:var(--gold);">👕</div>
+                        <div class="p-title">${p.title}</div>
+                        <div class="sizes">${sHtml}</div>
+                        <button class="buy-btn" onclick="window.location.href='https://shopier.com/ShackoWear'">SATIN AL</button>
+                    </div>
+                `;
             });
         }
 
-        // KESİN GİRİŞ KONTROLÜ
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('authPage').classList.remove('active');
