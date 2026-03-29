@@ -11,63 +11,64 @@
     <style>
         :root { --gold: #d4af37; --dark-green: #0a2e1d; --black: #050505; --card-bg: #111; }
         body { font-family: 'Poppins', sans-serif; margin: 0; background-color: var(--black); color: #fff; overflow-x: hidden; }
-        .page { display: none; padding: 15px; min-height: 100vh; }
-        .active { display: flex; flex-direction: column; animation: fadeIn 0.5s ease; }
+        
+        .page { display: none; padding: 15px; min-height: 100vh; flex-direction: column; }
+        .active { display: flex !important; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Giriş & Kayıt Paneli */
-        .auth-wrapper { background: radial-gradient(circle, var(--dark-green) 0%, var(--black) 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .auth-container { background: rgba(17, 17, 17, 0.9); backdrop-filter: blur(15px); border-radius: 40px; padding: 40px 30px; width: 85%; max-width: 380px; text-align: center; border: 1px solid rgba(212, 175, 55, 0.2); }
+        /* AUTH SCREEN */
+        .auth-wrapper { background: radial-gradient(circle, var(--dark-green) 0%, var(--black) 100%); align-items: center; justify-content: center; }
+        .auth-container { background: rgba(17,17,17,0.9); backdrop-filter: blur(15px); border-radius: 40px; padding: 40px 30px; width: 85%; max-width: 380px; text-align: center; border: 1px solid rgba(212,175,55,0.2); }
         .brand-logo { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 3em; font-weight: 900; margin: 0; line-height: 0.8; }
         .brand-sub { font-size: 0.6em; letter-spacing: 4px; text-transform: uppercase; margin: 15px 0 30px; opacity: 0.7; }
-
-        input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 15px; border: 1px solid #222; background: rgba(0,0,0,0.5); color: #fff; outline: none; }
-        .btn-main { width: 100%; padding: 16px; border: none; border-radius: 15px; background: var(--gold); color: #000; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        
+        input { width: 100%; padding: 16px; margin: 10px 0; border-radius: 15px; border: 1px solid #222; background: rgba(0,0,0,0.5); color: #fff; outline: none; box-sizing: border-box; }
+        .btn-main { width: 100%; padding: 16px; border: none; border-radius: 15px; background: var(--gold); color: #000; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: 0.3s; }
+        .btn-main:active { transform: scale(0.98); }
         .auth-toggle { margin-top: 20px; font-size: 0.8em; color: #888; cursor: pointer; text-decoration: underline; }
 
-        /* Mağaza */
+        /* SHOP SCREEN */
         .category-nav { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: #000; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #111; scrollbar-width: none; }
-        .cat-btn { padding: 10px 20px; border-radius: 20px; border: 1px solid #333; background: transparent; color: #fff; white-space: nowrap; font-size: 0.8em; font-weight: 600; }
+        .cat-btn { padding: 10px 20px; border-radius: 20px; border: 1px solid #333; background: transparent; color: #fff; white-space: nowrap; font-size: 0.8em; font-weight: 600; cursor: pointer; }
         .cat-btn.active-cat { background: var(--gold); color: #000; border-color: var(--gold); }
 
-        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 900px; margin: 10px auto; padding-bottom: 120px; }
-        .p-card { background: var(--card-bg); border-radius: 25px; border: 1px solid #222; overflow: hidden; text-align: center; }
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 900px; margin: 10px auto; padding-bottom: 50px; }
+        .p-card { background: var(--card-bg); border-radius: 25px; border: 1px solid #222; overflow: hidden; text-align: center; display: flex; flex-direction: column; }
         .p-img { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 2.2em; background: #181818; color: var(--gold); }
-        .p-info { padding: 15px; }
-        .p-title { font-size: 0.8em; font-weight: 600; margin-bottom: 10px; min-height: 32px; }
+        .p-info { padding: 15px; flex-grow: 1; }
+        .p-title { font-size: 0.8em; font-weight: 600; margin-bottom: 10px; min-height: 32px; color: #eee; }
         
         .size-selector { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-bottom: 15px; }
-        .size-btn { padding: 4px 8px; font-size: 0.65em; border: 1px solid #333; border-radius: 6px; background: transparent; color: #fff; }
-        .size-btn.selected { background: var(--gold); color: #000; }
-        
-        .btn-buy { width: 100%; padding: 10px; border: none; border-radius: 10px; background: var(--gold); color: #000; font-weight: 800; font-size: 0.75em; text-transform: uppercase; }
+        .size-btn { padding: 4px 8px; font-size: 0.65em; border: 1px solid #333; border-radius: 6px; background: transparent; color: #fff; cursor: pointer; }
+        .size-btn.selected { background: var(--gold); color: #000; border-color: var(--gold); }
+        .btn-buy { width: 100%; padding: 10px; border: none; border-radius: 10px; background: var(--gold); color: #000; font-weight: 800; font-size: 0.75em; text-transform: uppercase; cursor: pointer; }
 
-        /* Instagram & Footer */
-        .insta-footer { text-align: center; padding: 20px; margin-top: auto; }
-        .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 0.85em; display: inline-block; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-        #logoutBtn { margin: 20px auto; background: none; border: 1px solid #333; color: #666; padding: 8px 20px; border-radius: 10px; font-size: 0.75em; cursor: pointer; display: block; }
+        /* FOOTER & INSTAGRAM */
+        .footer-area { text-align: center; padding: 20px 0 40px; }
+        .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 0.85em; display: inline-block; margin-bottom: 15px; }
+        #logoutBtn { background: none; border: 1px solid #333; color: #555; padding: 8px 20px; border-radius: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div id="authPage" class="page active auth-wrapper">
+    <div id="authPage" class="page auth-wrapper active">
         <div class="auth-container">
             <div class="brand-logo">SHACKO</div>
             <div class="brand-logo" style="margin-top:-10px;">WEAR</div>
-            <div class="brand-sub">Premium Collection ADANA</div>
+            <div class="brand-sub">Premium Collection Since 2026</div>
             
             <div id="loginForm">
                 <input type="email" id="lEmail" placeholder="E-posta">
                 <input type="password" id="lPass" placeholder="Şifre">
-                <button class="btn-main" onclick="handleAuth('login')">Giriş Yap</button>
-                <div class="auth-toggle" onclick="toggleAuth(false)">Hesabın yok mu? Kayıt Ol</div>
+                <button class="btn-main" onclick="handleLogin()">Giriş Yap</button>
+                <div class="auth-toggle" onclick="showRegister()">Hesabın yok mu? Kayıt Ol</div>
             </div>
 
             <div id="registerForm" style="display:none;">
                 <input type="email" id="rEmail" placeholder="Yeni E-posta">
                 <input type="password" id="rPass" placeholder="Yeni Şifre">
-                <button class="btn-main" onclick="handleAuth('register')">Kayıt Ol ve Başla</button>
-                <div class="auth-toggle" onclick="toggleAuth(true)">Zaten üye misin? Giriş Yap</div>
+                <button class="btn-main" onclick="handleRegister()">Kayıt Ol ve Mağazaya Gir</button>
+                <div class="auth-toggle" onclick="showLogin()">Zaten üye misin? Giriş Yap</div>
             </div>
         </div>
     </div>
@@ -84,13 +85,14 @@
 
         <div class="product-grid" id="mainGrid"></div>
 
-        <div class="insta-footer">
-            <a href="https://www.instagram.com/shackowear" target="_blank" class="btn-insta">📸 Bizi Instagram'da Takip Et</a>
-            <button id="logoutBtn" onclick="firebase.auth().signOut()">Oturumu Kapat</button>
+        <div class="footer-area">
+            <a href="https://www.instagram.com/shackowear" target="_blank" class="btn-insta">📸 Bizi Instagram'da Takip Et</a><br>
+            <button id="logoutBtn" onclick="handleLogout()">Oturumu Kapat</button>
         </div>
     </div>
 
     <script>
+        // ÜRÜNLER VE BEDENLER (S, 28, 29 Hepsi Eklendi)
         const products = [
             { id: 1, cat: 'erkek', title: 'V Yaka Slim Tişört', icon: '👕', sizes: ['S','M','L','XL','XXL'] },
             { id: 2, cat: 'erkek', title: 'Basic Oversize Tişört', icon: '👕', sizes: ['S','M','L','XL'] },
@@ -104,6 +106,7 @@
             { id: 10, cat: 'esofman', title: 'Düz Jogger Takımı', icon: '👟', sizes: ['S','M','L','XL'] }
         ];
 
+        // FIREBASE KURULUMU
         const firebaseConfig = {
             apiKey: "AIzaSyCLds70T1pcQagPA7PI8hts06IRluGoX7E",
             authDomain: "shackodigital.firebaseapp.com",
@@ -115,22 +118,25 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        function toggleAuth(isLogin) {
-            document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
-            document.getElementById('registerForm').style.display = isLogin ? 'none' : 'block';
+        // GİRİŞ/KAYIT FONKSİYONLARI
+        function showRegister() { document.getElementById('loginForm').style.display='none'; document.getElementById('registerForm').style.display='block'; }
+        function showLogin() { document.getElementById('loginForm').style.display='block'; document.getElementById('registerForm').style.display='none'; }
+
+        function handleLogin() {
+            const e = document.getElementById('lEmail').value;
+            const p = document.getElementById('lPass').value;
+            auth.signInWithEmailAndPassword(e, p).catch(err => alert("Giriş Başarısız: " + err.message));
         }
 
-        function handleAuth(mode) {
-            const email = mode === 'login' ? document.getElementById('lEmail').value : document.getElementById('rEmail').value;
-            const pass = mode === 'login' ? document.getElementById('lPass').value : document.getElementById('rPass').value;
-            
-            if(mode === 'login') {
-                auth.signInWithEmailAndPassword(email, pass).catch(e => alert("Giriş Hatalı: " + e.message));
-            } else {
-                auth.createUserWithEmailAndPassword(email, pass).catch(e => alert("Kayıt Hatalı: " + e.message));
-            }
+        function handleRegister() {
+            const e = document.getElementById('rEmail').value;
+            const p = document.getElementById('rPass').value;
+            auth.createUserWithEmailAndPassword(e, p).catch(err => alert("Kayıt Başarısız: " + err.message));
         }
 
+        function handleLogout() { auth.signOut(); }
+
+        // MAĞAZA MANTIĞI
         function selectSize(btn) {
             btn.parentElement.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
@@ -160,16 +166,17 @@
             });
         }
 
+        // OTURUM DİNLEYİCİ (Yönlendirmeyi bu yapar)
         auth.onAuthStateChanged(user => {
-            document.getElementById('authPage').classList.toggle('active', !user);
-            document.getElementById('shopPage').classList.toggle('active', !!user);
-            if(user) filterCat('all');
+            if (user) {
+                document.getElementById('authPage').classList.remove('active');
+                document.getElementById('shopPage').classList.add('active');
+                filterCat('all');
+            } else {
+                document.getElementById('shopPage').classList.remove('active');
+                document.getElementById('authPage').classList.add('active');
+            }
         });
     </script>
 </body>
 </html>
-
-
-
-
-
